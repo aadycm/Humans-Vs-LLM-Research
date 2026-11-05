@@ -1,0 +1,6 @@
+.env
+*.env
+data/human/
+__pycache__/
+repo_log.txt
+push_log.txt
