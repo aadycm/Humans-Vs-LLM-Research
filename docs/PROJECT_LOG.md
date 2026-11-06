@@ -7,12 +7,15 @@ This log records what was done, in order, including problems and how they were f
 ## 1. Course deliverables (planning phase)
 | Deliverable | File in `docs/` |
 |---|---|
+| Critical review of a prior study | `Critical_Review_LLMs_Social_Decisions.docx` |
 | Literature review | `Literature_Review_Framing_LLMs.docx` |
 | Hypothesis and falsifiability criteria | `Hypothesis_and_Falsifiability.docx` |
 | Experimental plan (IRB exempt) | `Experimental_Plan_IRB.docx` |
 | Consent form | `01_Consent_Form.docx` |
 | Human survey instrument | `02_Human_Survey_Instrument.docx` |
 | LLM prompt protocol | `03_AI_Prompt_Protocol.docx` |
+| Experimental materials (index and combined PDF) | `00_Materials_Index.docx`, `ENVSE497_Experimental_Materials_Combined.pdf` |
+| Status update slides | `ENVSE497_Status_Update.pptx` |
 | Statistical analysis plan (written before any data were seen) | `ENVSE497_Statistical_Analysis_Plan.docx` |
 
 **Hypothesis.** Under ambiguous odds, loss framing raises the share of threat-relevant information people examine, and this effect is larger in humans than in LLMs.
@@ -21,6 +24,7 @@ This log records what was done, in order, including problems and how they were f
 ## 2. Building the survey (Qualtrics, Oct 2026)
 - Survey: Penn State Qualtrics, combined with classmate Danah Algannas's study (her part follows mine).
 - Flow: eligibility (Penn State student, 18+) → consent → instructions → 4 scenarios → post-task item → demographics → thank-you. Non-eligible or non-consenting respondents are ended and flagged *Screened-Out*. Responses anonymized (no IP/location), as the consent form promises.
+- Build instructions: `docs/Qualtrics_Build_Sheet.md`; question import file (Qualtrics Advanced Format): `docs/ENVSE497_survey_import.txt`.
 - The information board is custom JavaScript (`docs/qualtrics_scenario_code_textentry.js`): 7 cards, open up to 4, card order and A/B position randomized per scenario, one JSON record saved per scenario.
 
 **Problems found during testing and fixes**

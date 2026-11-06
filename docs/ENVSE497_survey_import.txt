@@ -1,0 +1,87 @@
+[[AdvancedFormat]]
+
+[[Block:Eligibility]]
+[[Question:MC:SingleAnswer]]
+Are you currently enrolled as a student at Penn State University?
+[[Choices]]
+Yes
+No
+[[Question:MC:SingleAnswer]]
+Are you at least 18 years of age?
+[[Choices]]
+Yes
+No
+
+[[Block:Consent]]
+[[Question:DB]]
+<strong>CONSENT FOR PARTICIPATION IN RESEARCH (EXEMPT)</strong> &mdash; The Pennsylvania State University<br><br><strong>Title:</strong> Human and AI Engineering Risk Decisions<br><strong>Faculty Advisor:</strong> Dr. Jeremy M. Gernand, Associate Professor of Environmental Health and Safety Engineering, 205 Hosler Building, University Park, PA 16802; jmgernand@psu.edu; 814-865-5861.<br><br><strong>Why is this research being done?</strong> This study looks at how decision makers, including students and AI models, make risk-related recommendations about technology.<br><br><strong>What will I be asked to do?</strong> Read a brief set of instructions and then answer a series of questions about a risk-related scenario, followed by a few questions about your background.<br><br><strong>How long?</strong> About 15 minutes, in one sitting.<br><br><strong>Risks?</strong> No greater than those of everyday life. Some questions may feel unfamiliar; there are no right or wrong answers.<br><br><strong>Benefits?</strong> No direct benefit to you. Results may help technologists use AI tools more responsibly.<br><br><strong>Privacy?</strong> This survey is anonymous. We will not ask for your name, email, student ID, age, or gender, and your IP address and location are not recorded. Responses are stored in Penn State's password-protected Qualtrics and OneDrive accounts. Because the survey collects no identifiers, we cannot remove your answers after you submit them.<br><br><strong>Payment?</strong> None, and no cost to take part.<br><br><strong>Voluntary?</strong> Taking part is voluntary. You may skip any question and stop at any time by closing your browser, with no effect on your grades or standing. You must be 18 or older.<br><br><strong>Questions?</strong> Study: Dr. Jeremy Gernand (jmgernand@psu.edu, 814-865-5861). Your rights as a participant: Penn State Office for Research Protections, 814-865-1775, orp@psu.edu.<br><br>By selecting &ldquo;I Agree&rdquo; you indicate that you have read this form and voluntarily agree to take part.
+[[Question:MC:SingleAnswer]]
+Do you agree to take part in this research?
+[[Choices]]
+I Agree
+I Do Not Agree
+
+[[Block:Instructions]]
+[[Question:DB]]
+<strong>How this works.</strong> You will see four short scenarios. In each one you must choose one of two options, A or B. Before you choose, you may open up to four information cards describing features of the two options &mdash; you do not have to open all four. There are no right or wrong answers; please choose what you would actually prefer. After the scenarios you will answer a few short background questions. The task takes about 15 minutes, and your responses are anonymous.
+
+[[Block:Scenarios]]
+[[Question:DB]]
+Scenario 1 &mdash; paste the scenario JavaScript here (SCENARIO_INDEX = 0), then clear this text.
+[[PageBreak]]
+[[Question:DB]]
+Scenario 2 &mdash; paste the scenario JavaScript here (SCENARIO_INDEX = 1), then clear this text.
+[[PageBreak]]
+[[Question:DB]]
+Scenario 3 &mdash; paste the scenario JavaScript here (SCENARIO_INDEX = 2), then clear this text.
+[[PageBreak]]
+[[Question:DB]]
+Scenario 4 &mdash; paste the scenario JavaScript here (SCENARIO_INDEX = 3), then clear this text.
+
+[[Block:Post-Activity]]
+[[Question:MC:SingleAnswer]]
+When the odds were described vaguely, how much did you focus on what could go wrong? (1 = not at all, 7 = a great deal)
+[[Choices]]
+1
+2
+3
+4
+5
+6
+7
+
+[[Block:Demographics]]
+[[Question:MC:SingleAnswer]]
+Which best describes your major?
+[[Choices]]
+Engineering
+Computer Science, IST, Data Science
+Math or Statistics
+Natural Science
+Social Science
+Other
+[[Question:MC:SingleAnswer]]
+What is your class standing?
+[[Choices]]
+Graduate
+5th year or more
+4th year
+3rd year
+1st or 2nd year
+[[Question:MC:SingleAnswer]]
+Have you taken a course in risk analysis or risk management?
+[[Choices]]
+Yes
+No
+[[Question:MC:SingleAnswer]]
+How many years of professional experience do you have (including internships or co-ops)?
+[[Choices]]
+None
+0-0.5 years
+0.5-1.0 years
+1.0-2.0 years
+More than 2.0 years
+
+[[Block:Thank You]]
+[[Question:DB]]
+<strong>Thank you.</strong> Your responses have been recorded.<br><br>A free gift ($5 Starbucks card) is available to the first 100 participants as a representation of our gratitude for completing this activity. Send an email to <strong>risk-exp@psu.edu</strong> from your official PSU email address, including the date that you completed this activity.<br><br>Questions? Contact Dr. Jeremy Gernand (jmgernand@psu.edu). Questions about your rights as a research participant: Penn State Office for Research Protections, 814-865-1775, orp@psu.edu.
