@@ -1,0 +1,219 @@
+[openai] 96 models:
+  chat-latest
+  chatgpt-image-latest
+  gpt-4.1
+  gpt-4.1-2025-04-14
+  gpt-4.1-mini
+  gpt-4.1-mini-2025-04-14
+  gpt-4o
+  gpt-4o-2024-08-06
+  gpt-4o-2024-11-20
+  gpt-4o-mini
+  gpt-4o-mini-2024-07-18
+  gpt-4o-mini-transcribe
+  gpt-4o-mini-transcribe-2025-03-20
+  gpt-4o-mini-transcribe-2025-12-15
+  gpt-4o-mini-tts
+  gpt-4o-mini-tts-2025-03-20
+  gpt-4o-mini-tts-2025-12-15
+  gpt-4o-transcribe
+  gpt-4o-transcribe-diarize
+  gpt-5
+  gpt-5-2025-08-07
+  gpt-5-mini
+  gpt-5-mini-2025-08-07
+  gpt-5-nano
+  gpt-5-nano-2025-08-07
+  gpt-5-pro
+  gpt-5-pro-2025-10-06
+  gpt-5-search-api
+  gpt-5-search-api-2025-10-14
+  gpt-5.1
+  gpt-5.1-2025-11-13
+  gpt-5.2
+  gpt-5.2-2025-12-11
+  gpt-5.2-pro
+  gpt-5.2-pro-2025-12-11
+  gpt-5.3-codex
+  gpt-5.4
+  gpt-5.4-2026-03-05
+  gpt-5.4-mini
+  gpt-5.4-mini-2026-03-17
+  gpt-5.4-nano
+  gpt-5.4-nano-2026-03-17
+  gpt-5.4-pro
+  gpt-5.4-pro-2026-03-05
+  gpt-5.5
+  gpt-5.5-2026-04-23
+  gpt-5.5-pro
+  gpt-5.5-pro-2026-04-23
+  gpt-5.6-luna
+  gpt-5.6-sol
+  gpt-5.6-terra
+  gpt-6-astra
+  gpt-6-luna
+  gpt-6-sol
+  gpt-6.1-sol
+  gpt-6.1-terra
+  gpt-audio
+  gpt-audio-1.5
+  gpt-audio-2025-08-28
+  gpt-audio-mini
+  gpt-audio-mini-2025-12-15
+  gpt-image-1-mini
+  gpt-image-1.5
+  gpt-image-2
+  gpt-image-2-2026-04-21
+  gpt-image-2.5-flare
+  gpt-image-2.5-flare-2026-09-08
+  gpt-image-2.5-sunburst
+  gpt-image-2.5-sunburst-2026-09-08
+  gpt-image-2.6-flare
+  gpt-image-2.6-sunburst
+  gpt-live-1
+  gpt-live-transcribe
+  gpt-realtime
+  gpt-realtime-1.5
+  gpt-realtime-2
+  gpt-realtime-2.1
+  gpt-realtime-2.1-mini
+  gpt-realtime-2025-08-28
+  gpt-realtime-mini
+  gpt-realtime-mini-2025-12-15
+  gpt-realtime-translate
+  gpt-realtime-whisper
+  gpt-transcribe
+  o3
+  o3-2025-04-16
+  omni-moderation-2024-09-26
+  omni-moderation-latest
+  text-embedding-3-large
+  text-embedding-3-small
+  text-embedding-ada-002
+  tts-1
+  tts-1-1106
+  tts-1-hd
+  tts-1-hd-1106
+  whisper-1
+
+[anthropic] no ANTHROPIC_API_KEY in .env
+
+[google] 63 models:
+  antigravity-preview-05-2026
+  antigravity-preview-09-2026
+  antigravity-preview-latest
+  aqa
+  deep-research-max-preview-04-2026
+  deep-research-preview-04-2026
+  deep-research-pro-preview-12-2025
+  gemini-2.5-computer-use-preview-10-2025
+  gemini-2.5-flash
+  gemini-2.5-flash-image
+  gemini-2.5-flash-lite
+  gemini-2.5-flash-native-audio-latest
+  gemini-2.5-flash-native-audio-preview-09-2025
+  gemini-2.5-flash-native-audio-preview-12-2025
+  gemini-2.5-flash-preview-tts
+  gemini-2.5-pro
+  gemini-2.5-pro-preview-tts
+  gemini-3-flash-preview
+  gemini-3-pro-image
+  gemini-3-pro-image-preview
+  gemini-3.1-flash-image
+  gemini-3.1-flash-image-preview
+  gemini-3.1-flash-lite
+  gemini-3.1-flash-lite-image
+  gemini-3.1-flash-lite-preview
+  gemini-3.1-flash-live-preview
+  gemini-3.1-flash-tts-preview
+  gemini-3.1-pro-preview
+  gemini-3.1-pro-preview-customtools
+  gemini-3.5-flash
+  gemini-3.5-flash-lite
+  gemini-3.5-live-translate-preview
+  gemini-3.5-transcribe
+  gemini-3.5-transcribe-live
+  gemini-3.6-flash
+  gemini-3.7-flash
+  gemini-3.8-flash
+  gemini-3.8-flash-lite-tts
+  gemini-3.8-flash-tts
+  gemini-3.8-live
+  gemini-3.8-live-extended-thinking
+  gemini-4-argon
+  gemini-4-carbon
+  gemini-decision-1
+  gemini-embedding-001
+  gemini-embedding-2
+  gemini-embedding-2-preview
+  gemini-flash-latest
+  gemini-flash-lite-latest
+  gemini-nano-banana-2.1
+  gemini-omni-1.1-flash
+  gemini-omni-1.2-flash
+  gemini-omni-flash-preview
+  gemini-pro-latest
+  gemini-robotics-er-2-preview
+  gemini-robotics-er-2-streaming-preview
+  gemma-4-26b-a4b-it
+  gemma-4-31b-it
+  lyria-3-clip-preview
+  lyria-3-pro-preview
+  lyria-3.5
+  lyria-realtime-exp
+  nano-banana-pro-preview
+
+[together] no TOGETHER_API_KEY in .env
+
+[openrouter] 51 models:
+  meta-llama/llama-3.1-70b-instruct  ($0.72/M in, $0.72/M out)
+  meta-llama/llama-3.1-8b-instruct  ($0.02/M in, $0.04/M out)
+  meta-llama/llama-3.2-1b-instruct  ($0.03/M in, $0.20/M out)
+  meta-llama/llama-3.2-3b-instruct  ($0.05/M in, $0.33/M out)
+  meta-llama/llama-3.3-70b-instruct  ($0.71/M in, $0.71/M out)
+  meta-llama/llama-4-maverick  ($0.35/M in, $1.00/M out)
+  meta-llama/llama-4-scout  ($0.10/M in, $0.30/M out)
+  meta-llama/llama-guard-4-12b  ($0.18/M in, $0.18/M out)
+  qwen/qwen-2.5-72b-instruct  ($0.36/M in, $0.40/M out)
+  qwen/qwen-2.5-coder-32b-instruct  ($0.66/M in, $1.00/M out)
+  qwen/qwen-plus  ($0.26/M in, $0.78/M out)
+  qwen/qwen2.5-vl-72b-instruct  ($0.80/M in, $1.00/M out)
+  qwen/qwen3-14b  ($0.10/M in, $0.22/M out)
+  qwen/qwen3-235b-a22b-2507  ($0.14/M in, $0.80/M out)
+  qwen/qwen3-235b-a22b-thinking-2507  ($0.45/M in, $3.50/M out)
+  qwen/qwen3-30b-a3b  ($0.12/M in, $0.50/M out)
+  qwen/qwen3-30b-a3b-instruct-2507  ($0.10/M in, $0.30/M out)
+  qwen/qwen3-32b  ($0.08/M in, $0.28/M out)
+  qwen/qwen3-coder  ($0.30/M in, $1.00/M out)
+  qwen/qwen3-coder-30b-a3b-instruct  ($0.15/M in, $0.60/M out)
+  qwen/qwen3-coder-flash  ($0.20/M in, $0.97/M out)
+  qwen/qwen3-coder-next  ($0.12/M in, $0.80/M out)
+  qwen/qwen3-next-80b-a3b-instruct  ($0.09/M in, $1.10/M out)
+  qwen/qwen3-vl-235b-a22b-instruct  ($0.21/M in, $1.90/M out)
+  qwen/qwen3-vl-30b-a3b-instruct  ($0.15/M in, $0.60/M out)
+  qwen/qwen3-vl-30b-a3b-thinking  ($0.29/M in, $1.00/M out)
+  qwen/qwen3-vl-8b-instruct  ($0.25/M in, $0.75/M out)
+  qwen/qwen3.5-122b-a10b  ($0.26/M in, $2.08/M out)
+  qwen/qwen3.5-27b  ($0.26/M in, $2.60/M out)
+  qwen/qwen3.5-35b-a3b  ($0.14/M in, $1.00/M out)
+  qwen/qwen3.5-397b-a17b  ($0.60/M in, $3.60/M out)
+  qwen/qwen3.5-9b  ($0.17/M in, $0.25/M out)
+  qwen/qwen3.5-flash-02-23  ($0.07/M in, $0.26/M out)
+  qwen/qwen3.5-plus-02-15  ($0.26/M in, $1.56/M out)
+  qwen/qwen3.5-plus-20260420  ($0.30/M in, $1.80/M out)
+  qwen/qwen3.6-27b  ($0.32/M in, $3.20/M out)
+  qwen/qwen3.6-35b-a3b  ($0.10/M in, $0.90/M out)
+  qwen/qwen3.6-flash  ($0.19/M in, $1.12/M out)
+  qwen/qwen3.6-plus  ($0.33/M in, $1.95/M out)
+  qwen/qwen3.7-flash  ($0.03/M in, $0.13/M out)
+  qwen/qwen3.7-max  ($1.48/M in, $4.42/M out)
+  qwen/qwen3.7-plus  ($0.32/M in, $1.28/M out)
+  qwen/qwen3.7-plus:batch  ($0.23/M in, $0.92/M out)
+  qwen/qwen3.8-2.4t-a95b  ($2.00/M in, $6.00/M out)
+  qwen/qwen3.8-27b  ($0.15/M in, $1.88/M out)
+  qwen/qwen3.8-27b:batch  ($0.16/M in, $2.00/M out)
+  qwen/qwen3.8-flash  ($0.15/M in, $0.47/M out)
+  qwen/qwen3.8-max-0902  ($2.00/M in, $6.00/M out)
+  qwen/qwen3.8-max-0902:batch  ($1.15/M in, $3.45/M out)
+  qwen/qwen3.8-max-prime  ($4.00/M in, $12.00/M out)
+  qwen/qwen3.8-omni-flash  ($0.15/M in, $0.47/M out)

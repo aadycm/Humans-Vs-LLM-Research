@@ -1,0 +1,38 @@
+{
+ "note": "GPT models are from the main study. Gemini, Qwen and Llama run through OpenRouter. Gemini thinking is turned off so all six models answer directly.",
+ "models": [
+  {
+   "provider": "openai",
+   "model": "gpt-4o-mini",
+   "main_study": true
+  },
+  {
+   "provider": "openai",
+   "model": "gpt-4.1",
+   "main_study": true
+  },
+  {
+   "provider": "openai",
+   "model": "gpt-4o",
+   "main_study": true
+  },
+  {
+   "provider": "openrouter",
+   "model": "google/gemini-2.5-flash",
+   "extra": {
+    "reasoning": {
+     "effort": "none"
+    }
+   }
+  },
+  {
+   "provider": "openrouter",
+   "model": "qwen/qwen3-235b-a22b-2507"
+  },
+  {
+   "provider": "openrouter",
+   "model": "meta-llama/llama-4-maverick"
+  }
+ ],
+ "paraphraser": "claude-opus-5-5"
+}
