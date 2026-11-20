@@ -7,16 +7,16 @@ This log records what was done, in order, including problems and how they were f
 ## 1. Course deliverables (planning phase)
 | Deliverable | File in `docs/` |
 |---|---|
-| Critical review of a prior study | `Critical_Review_LLMs_Social_Decisions.docx` |
-| Literature review | `Literature_Review_Framing_LLMs.docx` |
-| Hypothesis and falsifiability criteria | `Hypothesis_and_Falsifiability.docx` |
-| Experimental plan (IRB exempt) | `Experimental_Plan_IRB.docx` |
-| Consent form | `01_Consent_Form.docx` |
-| Human survey instrument | `02_Human_Survey_Instrument.docx` |
-| LLM prompt protocol | `03_AI_Prompt_Protocol.docx` |
-| Experimental materials (index and combined PDF) | `00_Materials_Index.docx`, `ENVSE497_Experimental_Materials_Combined.pdf` |
-| Status update slides | `ENVSE497_Status_Update.pptx` |
-| Statistical analysis plan (written before any data were seen) | `ENVSE497_Statistical_Analysis_Plan.docx` |
+| Critical review of a prior study | `coursework/Critical_Review_LLMs_Social_Decisions.docx` |
+| Literature review | `coursework/Literature_Review_Framing_LLMs.docx` |
+| Hypothesis and falsifiability criteria | `plans/Hypothesis_and_Falsifiability.docx` |
+| Experimental plan (IRB exempt) | `plans/Experimental_Plan_IRB.docx` |
+| Consent form | `survey/01_Consent_Form.docx` |
+| Human survey instrument | `survey/02_Human_Survey_Instrument.docx` |
+| LLM prompt protocol | `plans/03_AI_Prompt_Protocol.docx` |
+| Experimental materials (index and combined PDF) | `coursework/00_Materials_Index.docx`, `coursework/ENVSE497_Experimental_Materials_Combined.pdf` |
+| Status update slides | `coursework/ENVSE497_Status_Update.pptx` |
+| Statistical analysis plan (written before any data were seen) | `plans/ENVSE497_Statistical_Analysis_Plan.docx` |
 
 **Hypothesis.** Under ambiguous odds, loss framing raises the share of threat-relevant information people examine, and this effect is larger in humans than in LLMs.
 **Success criteria (pre-set).** (1) Human loss-vs-gain effect on threat-card share under ambiguity has a 95% CI above zero; (2) the human-minus-LLM difference in that effect has a 95% CI above zero. Both required.
@@ -24,8 +24,8 @@ This log records what was done, in order, including problems and how they were f
 ## 2. Building the survey (Qualtrics, Oct 2026)
 - Survey: Penn State Qualtrics, combined with classmate Danah Algannas's study (her part follows mine).
 - Flow: eligibility (Penn State student, 18+) → consent → instructions → 4 scenarios → post-task item → demographics → thank-you. Non-eligible or non-consenting respondents are ended and flagged *Screened-Out*. Responses anonymized (no IP/location), as the consent form promises.
-- Build instructions: `docs/Qualtrics_Build_Sheet.md`; question import file (Qualtrics Advanced Format): `docs/ENVSE497_survey_import.txt`.
-- The information board is custom JavaScript (`docs/qualtrics_scenario_code_textentry.js`): 7 cards, open up to 4, card order and A/B position randomized per scenario, one JSON record saved per scenario.
+- Build instructions: `docs/survey/Qualtrics_Build_Sheet.md`; question import file (Qualtrics Advanced Format): `docs/survey/ENVSE497_survey_import.txt`.
+- The information board is custom JavaScript (`docs/survey/qualtrics_scenario_code_textentry.js`): 7 cards, open up to 4, card order and A/B position randomized per scenario, one JSON record saved per scenario.
 
 **Problems found during testing and fixes**
 1. *JavaScript embedded data never saved.* In Qualtrics' new survey-taking engine, `setEmbeddedData` from JavaScript does not persist. Fix: each scenario became a Text Entry question with a hidden text box, and the script writes the JSON into it.
@@ -44,7 +44,7 @@ Lesson: preview runs plus a real **data export** before launch caught every one 
 - Raw human data is **not** in this repository (IRB plan: participant data stays on Penn State storage). Only aggregates are under `results/human/`.
 
 ## 4. LLM data collection (Oct 31, 2026)
-- Runner: `run_llm.py` (Python standard library only), launched with `RUN_ME.bat`. Reads the API key from a local `.env` that is git-ignored and never printed.
+- Runner: `code/run_llm.py` (Python standard library only), launched with `scripts/run_main_study.bat`. Reads the API key from a local `.env` that is git-ignored and never printed.
 - Same 4 scenarios and 7 cards as the survey; 30 fresh-context runs per scenario per model; temperature 1.0; card order and A/B label randomized each run; raw replies logged.
 - **Deviation:** OpenAI had retired GPT-3.5-turbo and GPT-4 (the test run returned "model deprecated"), so they were replaced with **GPT-4o-mini** and **GPT-4.1**; GPT-4o kept.
 - Result: 360 of 360 runs usable, 30 per model x scenario, no retries. One GPT-4o reply also named a non-existent card ("Probability"), which was ignored (3 cards kept).
@@ -68,7 +68,7 @@ Lesson: preview runs plus a real **data export** before launch caught every one 
 - LLMs differ from people in two directions: GPT-4.1 and GPT-4o are uniformly risk-averse; GPT-4o-mini over-reacts to loss wording. All models nearly always open Worst case and Reliability.
 - Engagement fell across the fixed scenario order: no cards opened 13% → 53%, median decision time 55 s → 16 s.
 
-Reports: `docs/ENVSE497_Human_Results_Summary.docx`, `docs/ENVSE497_Human_Results_Report.docx`, `docs/ENVSE497_Human_vs_LLM_Results.docx`.
+Reports: `docs/reports/ENVSE497_Human_Results_Summary.docx`, `docs/reports/ENVSE497_Human_Results_Report.docx`, `docs/reports/ENVSE497_Human_vs_LLM_Results.docx`.
 
 ## 7. Limitations
 1. Fixed scenario order and fixed topic per condition: fatigue and topic are confounded with condition (human data only; each LLM run is a fresh conversation).
@@ -78,5 +78,11 @@ Reports: `docs/ENVSE497_Human_Results_Summary.docx`, `docs/ENVSE497_Human_Result
 5. Near-unanimous LLM choices give wide confidence intervals.
 
 ## 8. Presentation and next steps
-- Data-collection presentation (Nov 4, 2026): slide deck "ENVSE 497 Data Collection Review"; script in `docs/presentation_script.md`.
+- Data-collection presentation (Nov 4, 2026): slide deck "ENVSE 497 Data Collection Review"; script in `docs/coursework/presentation_script.md`.
 - Dr. Gernand is open to extending this into a publication, with or without new scenarios, after reading a full draft. Next: write the full draft paper (framing: search vs. choice, and human-LLM differences), with the hypothesis rejection reported plainly.
+
+## 9. Follow-up study (Nov 2026)
+- Plan: `docs/plans/ENVSE497_FollowUp_Plan.pdf` (10 Nov, with the wording-gap rule added on 11 Nov before any runs).
+- Six models, card limits 0, 2, 3 and 4, original wording plus two paraphrases, and mirrored scenarios. Runner: `code/run_llm_v2.py`. Runs: `data/llm_runs_v2.jsonl` (11 Nov 2026).
+- Analysis: `analysis/analyze_followup.py`, figures: `analysis/figs_paper.py`. Results: `results/followup/`.
+- Paper draft: `paper/`.

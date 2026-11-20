@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from statsmodels.stats.proportion import proportion_confint
 ROOT=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 R=json.load(open(os.path.join(ROOT,'results','human','results_human.json'))); L=pd.read_csv(os.path.join(ROOT,'data','human','analysis_long.csv'))
-os.chdir(os.path.join(ROOT,'figures'))
+os.makedirs(os.path.join(ROOT,'figures','main_study'),exist_ok=True); os.chdir(os.path.join(ROOT,'figures','main_study'))
 B,O='#2a78d6','#eb6834'; INK='#0b0b0b'; MUT='#52514e'; GRID='#e4e3df'
 plt.rcParams.update({'font.family':'DejaVu Sans','font.size':10,'axes.edgecolor':MUT,'axes.labelcolor':INK,'xtick.color':MUT,'ytick.color':MUT,'axes.spines.top':False,'axes.spines.right':False})
 def style(ax):
@@ -20,7 +20,7 @@ for i,(fr,col) in enumerate([('gain',B),('loss',O)]):
     for xx,pp in zip(xs,p): ax.text(xx,4,f'{pp:.0f}%',ha='center',color='white',fontsize=9,fontweight='bold')
 ax.axhline(300/7,ls='--',color=MUT,lw=1.2,label='Chance (3 of 7 = 43%)')
 ax.set_xticks(x,['Precise odds','Ambiguous odds']); ax.set_ylim(0,70); ax.set_ylabel('Threat cards, % of cards opened')
-ax.legend(frameon=False,loc='upper left',ncol=3,fontsize=9); fig.tight_layout(); fig.savefig('fig1.png',dpi=220)
+ax.legend(frameon=False,loc='upper left',ncol=3,fontsize=9); fig.tight_layout(); fig.savefig('fig1_threat_share.png',dpi=220)
 # Fig 2
 fig,ax=plt.subplots(figsize=(6.2,3.4)); style(ax)
 for i,(fr,col) in enumerate([('gain',B),('loss',O)]):
@@ -34,7 +34,7 @@ for i,(fr,col) in enumerate([('gain',B),('loss',O)]):
     for xx,pp in zip(xs,ps): ax.text(xx,4,f'{pp:.0f}%',ha='center',color='white',fontsize=9,fontweight='bold')
 ax.axhline(50,ls='--',color=MUT,lw=1.2,label='50%')
 ax.set_xticks(x,['Precise odds','Ambiguous odds']); ax.set_ylim(0,90); ax.set_ylabel('Chose the safe option, %')
-ax.legend(frameon=False,loc='upper left',ncol=2); fig.tight_layout(); fig.savefig('fig2.png',dpi=220)
+ax.legend(frameon=False,loc='upper left',ncol=2); fig.tight_layout(); fig.savefig('fig2_safe_choice.png',dpi=220)
 # Fig 3 small multiples by position
 g=L.groupby('scenario').agg(zero=('nOpened',lambda s:(s==0).mean()*100),ms=('ms',lambda s:s.median()/1000))
 labs=['1\nGain·precise','2\nGain·ambig.','3\nLoss·precise','4\nLoss·ambig.']
@@ -44,4 +44,4 @@ for ax,col,ttl,fmt in [(axs[0],'zero','Opened no cards (%)','{:.0f}%'),(axs[1],'
     for i,v in enumerate(g[col]): ax.text(i+1,v+(2 if col=='zero' else 2),fmt.format(v),ha='center',fontsize=8.5,color=INK)
     ax.set_xticks(range(1,5),labs,fontsize=7.5); ax.set_title(ttl,fontsize=10,color=INK,loc='left'); ax.set_ylim(0,max(g[col])*1.25); ax.set_xlim(0.6,4.4)
 fig.text(0.5,0.01,'Scenario position (fixed order)',ha='center',fontsize=9,color=MUT)
-fig.tight_layout(rect=(0,0.04,1,1)); fig.savefig('fig3.png',dpi=220)
+fig.tight_layout(rect=(0,0.04,1,1)); fig.savefig('fig3_engagement_by_position.png',dpi=220)

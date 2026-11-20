@@ -9,7 +9,7 @@ CITE={"tversky1981framing":("Tversky & Kahneman","1981"),"kahneman1979prospect":
 "binz2023using":("Binz & Schulz","2023"),"hagendorff2023human":("Hagendorff et al.","2023"),"suri2024large":("Suri et al.","2024"),
 "macmillanscott2024irrationality":("Macmillan-Scott & Musolesi","2024"),"echterhoff2024cognitive":("Echterhoff et al.","2024"),
 "sclar2024quantifying":("Sclar et al.","2024"),"sainz2023nlp":("Sainz et al.","2023"),"newcombe1998interval":("Newcombe","1998"),
-"firth1993bias":("Firth","1993"),"liang1986longitudinal":("Liang & Zeger","1986"),"lakens2017equivalence":("Lakens","2017")}
+"firth1993bias":("Firth","1993"),"liang1986longitudinal":("Liang & Zeger","1986"),"lakens2017equivalence":("Lakens","2017"),"ge2026mind":("Ge et al.","2026"),"zhang2026same":("Zhang et al.","2026"),"schultemecklenbeck2014out":("Schulte-Mecklenbeck and Kühberger","2014")}
 FIGS={"FIG1":("figures/fig1_models_gap.pdf","1"),"FIG2":("figures/fig2_original_vs_mirrored.pdf","1"),"FIG3":("figures/fig3_people_gap.pdf","0.65")}
 
 def blocks(text):
@@ -48,7 +48,12 @@ def inline(s):
     def keep(m):
         cites.append(m.group(0)); return f"\x00{len(cites)-1}\x00"
     s=re.sub(r"\[(@[^\]]+)\]|@(\w+)",keep,s)
+    urls=[]
+    def keepu(m):
+        urls.append(m.group(0)); return f"\x01{len(urls)-1}\x01"
+    s=re.sub(r"https?://[^\s)]+[^\s).,;]",keepu,s)
     s=esc(s)
+    s=re.sub(r"\x01(\d+)\x01",lambda m:"\\url{"+urls[int(m.group(1))]+"}",s)
     s=re.sub(r"\*\*(.+?)\*\*",r"\\textbf{\1}",s)
     s=re.sub(r"(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)",r"\\emph{\1}",s)
     def back(m):
@@ -56,7 +61,7 @@ def inline(s):
         if c.startswith("["): return "\\citep{"+",".join(re.findall(r"@(\w+)",c))+"}"
         return "\\citet{"+c[1:]+"}"
     s=re.sub(r"\x00(\d+)\x00",back,s)
-    s=s.replace("Section 3.5","Section~\\ref{sec:para}").replace("Appendix A","Appendix~\\ref{app:materials}")
+    s=s.replace("Section 3.5","Section~\\ref{sec:para}")
     return s
 
 def table_tex(lines,caption,label,small=True):
@@ -85,8 +90,8 @@ def to_tex():
             out.append("\\begin{abstract}\n"+inline(bs[i+1])+"\n\\end{abstract}"); i+=2; continue
         if b.startswith("## References"):
             out.append("\\bibliographystyle{abbrvnat}\n\\bibliography{refs}"); i+=1; continue
-        if b.startswith("## Appendix"):
-            out.append("\\clearpage\n\\appendix\n\\section{Materials}\\label{app:materials}"); in_app=True; i+=1; continue
+        if b.startswith("## Supplementary information"):
+            out.append("\\clearpage\n\\section*{Supplementary information}\\label{app:materials}\n\\setcounter{table}{0}\\renewcommand{\\thetable}{S\\arabic{table}}\\setcounter{section}{0}\\renewcommand{\\thesection}{S}"); in_app=True; i+=1; continue
         m=re.match(r"^(#{2,3}) (.*)$",b)
         if m:
             lvl,t=len(m.group(1)),m.group(2)
@@ -94,6 +99,7 @@ def to_tex():
             if num: t=num.group(3)
             cmd=("section" if lvl==2 else "subsection")+("" if (num or in_app) else "*")
             lab="\\label{sec:para}" if num and num.group(1)=="3.5" else ""
+            if t in ("Firth regressions","Safe choices by scenario"): out.append("\\clearpage")
             out.append(f"\\{cmd}{{{inline(t)}}}{lab}"); i+=1; continue
         mt=re.match(r"^\*\*Table (\w+)\.\*\* (.*)$",b,re.S)
         if mt and i+1<len(bs) and bs[i+1].startswith("|"):
@@ -129,7 +135,7 @@ PRE=r"""\documentclass[11pt]{article}
 \usepackage{array}
 \usepackage{xcolor}
 \usepackage[round,authoryear]{natbib}
-\usepackage[hidelinks]{hyperref}
+\usepackage[hidelinks,pdftitle={Information Access and Gain-Loss Framing in Six Large Language Models and Human Decision Makers},pdfauthor={Aadithya Chandramouli and Jeremy M. Gernand}]{hyperref}
 \usepackage{caption}
 \captionsetup{font=small,labelfont=bf}
 \newcommand{\todo}[1]{\textcolor{red}{[#1]}}
@@ -142,7 +148,7 @@ PRE=r"""\documentclass[11pt]{article}
   \and
   Jeremy M. Gernand\\
   College of Earth and Mineral Sciences\\
-  The Pennsylvania State University \todo{confirm department}
+  The Pennsylvania State University
 }
 \date{}
 \begin{document}

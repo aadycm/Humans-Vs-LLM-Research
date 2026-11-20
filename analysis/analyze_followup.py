@@ -214,14 +214,23 @@ def main():
     for m in MODELS:
         out,trend=frame_model(d,m); reg[SHORT[m]]=dict(by_level={str(k):v for k,v in out.items()},trend_loss_2to4=trend)
     res["regression"]=reg
-    hall,hgrp,hglmm=human_tables()
-    hall.to_csv(os.path.join(OUT,"human_gap_by_cards.csv"),index=False); hgrp.to_csv(os.path.join(OUT,"human_gap_grouped.csv"),index=False)
-    res["human_glmm"]=hglmm
+    # the people data is not in the public repo (irb)  skip that part if the file is missing
+    HUMAN=os.path.join(ROOT,"data","human","combined_trials.csv")
+    have_people=os.path.exists(HUMAN)
+    if have_people:
+        hall,hgrp,hglmm=human_tables()
+        hall.to_csv(os.path.join(OUT,"human_gap_by_cards.csv"),index=False); hgrp.to_csv(os.path.join(OUT,"human_gap_grouped.csv"),index=False)
+        res["human_glmm"]=hglmm
+    else:
+        print("no people data at",HUMAN,"- skipping the people part and keeping the saved people results")
+        old=os.path.join(OUT,"followup_results.json")
+        if os.path.exists(old): res["human_glmm"]=json.load(open(old)).get("human_glmm")
     bb=boot_labels(d,lambda s:s.wording=="orig"); bp=boot_labels(d,lambda s:s.wording.notna(),seed=3)
     bb["newcombe_label"]=bal.label.values; bp["newcombe_label"]=allt.label.values
     bb.to_csv(os.path.join(OUT,"boot_balanced.csv"),index=False); bp.to_csv(os.path.join(OUT,"boot_pooled.csv"),index=False)
     res["boot_agree"]=dict(balanced=int((bb.boot_label==bb.newcombe_label).sum()),pooled=int((bp.boot_label==bp.newcombe_label).sum()),of=len(bb))
-    hb=human_boot(); hb["newcombe_label"]=hgrp.label.values; hb.to_csv(os.path.join(OUT,"human_boot.csv"),index=False)
+    if have_people:
+        hb=human_boot(); hb["newcombe_label"]=hgrp.label.values; hb.to_csv(os.path.join(OUT,"human_boot.csv"),index=False)
     card_choices(d).to_csv(os.path.join(OUT,"card_choices.csv"),index=False)
     batch_check(d).to_csv(os.path.join(OUT,"batch_check.csv"),index=False)
     json.dump(res,open(os.path.join(OUT,"followup_results.json"),"w"),indent=1,default=float)
@@ -238,10 +247,11 @@ def main():
     for m,v in reg.items():
         print(f"  {m:17}"+"  ".join(f"L{L} OR {v['by_level'][str(L)]['OR']:.3f} [{v['by_level'][str(L)]['lo']:.3f},{v['by_level'][str(L)]['hi']:.3f}]" for L in LEVELS)
               +f"   trend 2-4 cards loss side: OR/card {v['trend_loss_2to4']['OR_per_card']:.2f} p={v['trend_loss_2to4']['p']:.3g}")
-    print("\n== people by cards opened\n"+fmt(hall[["cards_opened","n_gain","n_loss","pct_gain","pct_loss","gap","lo","hi","label"]]))
-    print(fmt(hgrp[["cards_opened","n_gain","n_loss","pct_gain","pct_loss","gap","lo","hi","label"]]))
-    for t in hglmm["tests"]: print(f"  {t['contrast']:32} OR {t['OR']:.2f} [{t['lo']:.2f},{t['hi']:.2f}] p={t['p']:.3g}")
-    print("  person sd",round(hglmm["person_sd"],2))
+    if have_people:
+        print("\n== people by cards opened\n"+fmt(hall[["cards_opened","n_gain","n_loss","pct_gain","pct_loss","gap","lo","hi","label"]]))
+        print(fmt(hgrp[["cards_opened","n_gain","n_loss","pct_gain","pct_loss","gap","lo","hi","label"]]))
+        for t in hglmm["tests"]: print(f"  {t['contrast']:32} OR {t['OR']:.2f} [{t['lo']:.2f},{t['hi']:.2f}] p={t['p']:.3g}")
+        print("  person sd",round(hglmm["person_sd"],2))
 
 if __name__=="__main__":
     main()

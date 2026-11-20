@@ -1,6 +1,28 @@
+# api keys never go in the repo
 .env
 *.env
+
+# survey answers stay on penn state storage
 data/human/
+**/combined_trials.csv
+**/analysis_long.csv
+
+# run leftovers
 __pycache__/
-repo_log.txt
+*.lock
+logs/
 push_log.txt
+repo_log.txt
+_reorg/
+_final/
+PUBLISH_REPO.bat
+
+# latex build files
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.bbl
+paper/*.blg
+paper/*.fls
+paper/*.fdb_latexmk
+paper/*.synctex.gz
