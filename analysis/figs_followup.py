@@ -42,19 +42,19 @@ def series(ax,x,y,lo,hi,labels,color,ms=7):
     ax.plot(x,y,color=color,lw=2,zorder=3,solid_capstyle="round")
     for xi,yi,lab in zip(x,y,labels):
         if lab=="swayed": ax.plot(xi,yi,"o",ms=ms,color=color,mec=BG,mew=1.5,zorder=4)
-        elif lab=="not swayed": ax.plot(xi,yi,"o",ms=ms,mfc=BG,mec=color,mew=2,zorder=4)
+        elif lab=="within threshold": ax.plot(xi,yi,"o",ms=ms,mfc=BG,mec=color,mew=2,zorder=4)
         else: ax.plot(xi,yi,"D",ms=ms-1.5,mfc=BG,mec=color,mew=2,zorder=4)
 
 def legend_handles(color=INK2):
     return [Line2D([],[],marker="o",ls="",ms=7,color=color,mec=BG,label="Swayed"),
-            Line2D([],[],marker="o",ls="",ms=7,mfc=BG,mec=color,mew=2,label="Not swayed"),
+            Line2D([],[],marker="o",ls="",ms=7,mfc=BG,mec=color,mew=2,label="Within threshold"),
             Line2D([],[],marker="D",ls="",ms=5.5,mfc=BG,mec=color,mew=2,label="Inconclusive"),
             Patch(color=ZONE,label="Gap within ±10 points")]
 
 def switch_text(g):
     labs=list(g.sort_values("cards").label); cards=list(g.sort_values("cards").cards)
     for i,L in enumerate(cards):
-        if all(x=="not swayed" for x in labs[i:]): return f"Stops being swayed at {L} cards"
+        if all(x=="within threshold" for x in labs[i:]): return f"Stops being swayed at {L} cards"
     if all(x=="swayed" for x in labs): return "Swayed at every card level"
     return "No clear switch point"
 
@@ -114,15 +114,15 @@ def fig_sets():
        Line2D([],[],color=ORANGE,lw=2.5,label="Mirrored 4 (same facts, opposite wording)")]
     fig.legend(handles=h,loc="lower center",ncol=2,fontsize=9,bbox_to_anchor=(0.5,-0.04),labelcolor=INK)
     fig.text(0.0,1.04,"The gap in original vs mirrored scenarios",fontsize=13,fontweight="semibold",color=INK)
-    fig.text(0.0,1.005,"Point shapes follow Figure 1 (filled = swayed, open circle = not swayed, diamond = inconclusive). Shaded band = 95% CI.",fontsize=8.8,color=INK2)
+    fig.text(0.0,1.005,"Point shapes follow Figure 1 (filled = swayed, open circle = within threshold, diamond = inconclusive). Shaded band = 95% CI.",fontsize=8.8,color=INK2)
     fig.tight_layout(h_pad=2.2)
     save(fig,"fig3_original_vs_mirrored")
 
 # fig 4  one glance summary grid
 def fig_grid():
     t=pd.read_csv(os.path.join(RES,"gap_all.csv"))
-    fill={"swayed":"#256abf","inconclusive":"#9ec5f4","not swayed":"#f1f0ec"}
-    txt={"swayed":"#ffffff","inconclusive":INK,"not swayed":INK}
+    fill={"swayed":"#256abf","inconclusive":"#9ec5f4","within threshold":"#f1f0ec"}
+    txt={"swayed":"#ffffff","inconclusive":INK,"within threshold":INK}
     fig,ax=plt.subplots(figsize=(6.6,3.6))
     for r,m in enumerate(ORDER):
         for c,L in enumerate(LEVELS):
@@ -135,7 +135,7 @@ def fig_grid():
     ax.xaxis.tick_top()
     ax.set_yticks([i+0.5 for i in range(len(ORDER))]); ax.set_yticklabels(ORDER,color=INK)
     for s in ax.spines.values(): s.set_visible(False)
-    h=[Patch(color=fill[k],label=k.capitalize()) for k in ["swayed","inconclusive","not swayed"]]
+    h=[Patch(color=fill[k],label=k.capitalize()) for k in ["swayed","inconclusive","within threshold"]]
     ax.legend(handles=h,loc="upper center",bbox_to_anchor=(0.5,-0.02),ncol=3,fontsize=8.5,labelcolor=INK)
     ax.set_title("Wording gap in points (small text: safe % gain vs loss)",loc="left",color=INK,fontweight="semibold",fontsize=10.5,pad=26)
     fig.tight_layout()

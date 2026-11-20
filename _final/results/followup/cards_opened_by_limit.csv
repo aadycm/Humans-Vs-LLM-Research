@@ -1,0 +1,7 @@
+model,2,3,4
+google/gemini-2.5-flash,2.0,3.0,4.0
+gpt-4.1,2.0,2.994,3.998
+gpt-4o,1.996,2.979,3.975
+gpt-4o-mini,2.0,3.0,4.0
+meta-llama/llama-4-maverick,1.998,2.996,3.998
+qwen/qwen3-235b-a22b-2507,2.0,3.0,4.0

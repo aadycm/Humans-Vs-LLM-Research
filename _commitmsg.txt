@@ -1,0 +1,8 @@
+Clean up the repo for the preprint
+
+Puts everything into folders, adds the final paper and the script
+that makes the last few numbers in it, and rewrites the README in
+plain English. Survey answers and API keys stay out of the repo.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01Naok1CiyUf7nWWDKMRAWpn

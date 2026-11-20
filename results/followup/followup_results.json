@@ -1,6 +1,14 @@
 {
  "runs_used": 11519,
  "runs_dropped": 1,
+ "switch_balanced": {
+  "GPT-4.1": "4 cards",
+  "GPT-4o": "no switch",
+  "GPT-4o-mini": "no switch",
+  "Gemini 2.5 Flash": "no switch",
+  "Qwen3 235B": "no switch",
+  "Llama 4 Maverick": "no switch"
+ },
  "switch_all": {
   "GPT-4.1": "2 cards",
   "GPT-4o": "3 cards",
@@ -296,6 +304,24 @@
     "z": -2.1269835226292964,
     "p": 0.0334214522878819
    }
-  ]
+  ],
+  "gee": {
+   "contrast": "difference (0-1 minus 2+), gee exchangeable",
+   "OR": 0.5285855696720542,
+   "lo": 0.2751632730494519,
+   "hi": 1.0154069668131773,
+   "p": 0.05560777699742422,
+   "no_amb": {
+    "OR": 0.5150016561599879,
+    "lo": 0.2678012929303587,
+    "hi": 0.9903862036861123,
+    "p": 0.04670620258819164
+   }
+  }
+ },
+ "boot_agree": {
+  "balanced": 24,
+  "pooled": 24,
+  "of": 24
  }
 }

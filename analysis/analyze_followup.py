@@ -45,14 +45,16 @@ def gap_ci(kg,ng,kl,nl):
     return d,d-math.sqrt((pg-lg)**2+(ul-pl)**2),d+math.sqrt((ug-pg)**2+(pl-ll)**2)
 
 def label(d,lo,hi):
+    # round first so a gap of exactly 10 points isnt read as 9.999999 by float math
+    d,lo,hi=round(d,9),round(lo,9),round(hi,9)
     if abs(d)>=0.10 and (lo>0 or hi<0): return "swayed"
-    if lo>-0.10 and hi<0.10: return "not swayed"
+    if lo>-0.10 and hi<0.10: return "within threshold"
     return "inconclusive"
 
 def switch_point(labels):
-    # smallest level that is not swayed and stays not swayed at every higher level
+    # smallest level that is within threshold and stays within it at every higher level
     for i,L in enumerate(LEVELS):
-        if all(x=="not swayed" for x in labels[i:]): return L
+        if all(x=="within threshold" for x in labels[i:]): return L
     return None
 
 def gap_row(sub,**keys):
@@ -128,12 +130,79 @@ def human_tables():
     c_many=contrast(f,[0,1,0,0,0],"loss effect, 2+ cards opened")
     c_few=contrast(f,[0,1,0,1,0],"loss effect, 0-1 cards opened")
     c_diff=contrast(f,[0,0,0,1,0],"difference (0-1 minus 2+)")
-    return pd.DataFrame(rows),pd.DataFrame(rows2),dict(person_sd=f["sd"],n_decisions=f["nobs"],n_people=f["ngroups"],tests=[c_few,c_many,c_diff])
+    # same model with gee  exchangeable correlation inside each person
+    import statsmodels.api as sm,statsmodels.formula.api as smf
+    g=smf.gee("safe ~ loss*few + amb",groups="unit",data=h,family=sm.families.Binomial(),cov_struct=sm.cov_struct.Exchangeable()).fit()
+    b,se=g.params["loss:few"],g.bse["loss:few"]
+    gee=dict(contrast="difference (0-1 minus 2+), gee exchangeable",OR=math.exp(b),lo=math.exp(b-1.96*se),hi=math.exp(b+1.96*se),p=float(g.pvalues["loss:few"]))
+    # same gee without the exact vs range term  reported as a sensitivity check
+    g2=smf.gee("safe ~ loss*few",groups="unit",data=h,family=sm.families.Binomial(),cov_struct=sm.cov_struct.Exchangeable()).fit()
+    b,se=g2.params["loss:few"],g2.bse["loss:few"]
+    gee["no_amb"]=dict(OR=math.exp(b),lo=math.exp(b-1.96*se),hi=math.exp(b+1.96*se),p=float(g2.pvalues["loss:few"]))
+    return pd.DataFrame(rows),pd.DataFrame(rows2),dict(person_sd=f["sd"],n_decisions=f["nobs"],n_people=f["ngroups"],tests=[c_few,c_many,c_diff],gee=gee)
+
+
+# ---- bootstrap check on the labels ----
+def boot_labels(d,filt,B=4000,seed=1):
+    # resample runs inside each gain and loss cell  percentile interval  same rule
+    rng=np.random.default_rng(seed); rows=[]
+    for m in MODELS:
+        for L in LEVELS:
+            s=d[(d.model==m)&(d.card_limit==L)]; s=s[filt(s)]
+            g=s[s.loss==0].safe.to_numpy(); l=s[s.loss==1].safe.to_numpy()
+            bg=rng.binomial(len(g),g.mean(),B)/len(g); bl=rng.binomial(len(l),l.mean(),B)/len(l)
+            diff=bg-bl; lo,hi=np.percentile(diff,[2.5,97.5])
+            rows.append(dict(model=SHORT[m],cards=L,gap=100*(g.mean()-l.mean()),boot_lo=100*lo,boot_hi=100*hi,boot_label=label(g.mean()-l.mean(),lo,hi)))
+    return pd.DataFrame(rows)
+
+def human_boot(B=2000,seed=2):
+    # resample people  keep all four of a persons decisions together
+    h=pd.read_csv(os.path.join(ROOT,"data","human","combined_trials.csv")); h=h[h.source=="human"].copy()
+    h["grp"]=h.nOpened.map(lambda k:"0-1" if k<=1 else ("2-3" if k<=3 else "4"))
+    ids=h.unit.unique(); by={u:x for u,x in h.groupby("unit")}; rng=np.random.default_rng(seed)
+    out={g:[] for g in ["0-1","2-3","4"]}
+    for _ in range(B):
+        hb=pd.concat([by[u] for u in rng.choice(ids,len(ids))])
+        for g in out:
+            x=hb[hb.grp==g]; a=x[x.loss==0].safe; b=x[x.loss==1].safe
+            if len(a) and len(b): out[g].append(a.mean()-b.mean())
+    rows=[]
+    for g,v in out.items():
+        x=h[h.grp==g]; d0=x[x.loss==0].safe.mean()-x[x.loss==1].safe.mean(); lo,hi=np.percentile(v,[2.5,97.5])
+        rows.append(dict(cards_opened=g,gap=100*d0,boot_lo=100*lo,boot_hi=100*hi,boot_label=label(d0,lo,hi)))
+    return pd.DataFrame(rows)
+
+def card_choices(d):
+    # which cards the models picked  share of runs that opened each card  split by frame
+    s=d[d.card_limit>0]; rows=[]
+    for (m,L,fr),g in s.groupby(["model","card_limit","loss"]):
+        cnt={}
+        for cs in g.cards_opened:
+            for c in cs: cnt[c]=cnt.get(c,0)+1
+        for c,k in cnt.items(): rows.append(dict(model=SHORT[m],card_limit=L,frame="loss" if fr else "gain",card=c,share=100*k/len(g),n_runs=len(g)))
+    return pd.DataFrame(rows)
+
+def batch_check(d):
+    # gpt q1-q4 original wording at 4 cards came from the oct 31 batch  compare with the nov paraphrase runs of the same scenarios
+    rows=[]
+    for m in ["gpt-4.1","gpt-4o","gpt-4o-mini"]:
+        s=d[(d.model==m)&(d.card_limit==4)&(d.set=="original")]
+        for lab,x in [("oct 31 batch (orig wording)",s[s.wording=="orig"]),("nov batch (p1+p2)",s[s.wording!="orig"])]:
+            rows.append(dict(model=SHORT[m],batch=lab,n=len(x),safe_gain=100*x[x.loss==0].safe.mean(),safe_loss=100*x[x.loss==1].safe.mean()))
+    return pd.DataFrame(rows)
 
 def main():
     d,dropped=load_llm()
     res={"runs_used":int(len(d)),"runs_dropped":dropped}
     allt=gap_table(d); orig=gap_table(d,lambda s:s.set=="original"); mir=gap_table(d,lambda s:s.set=="mirrored")
+    # balanced view  original wording only so every topic counts once per frame  q1-q4 vs m1-m4  120 per side
+    bal=gap_table(d,lambda s:s.wording=="orig")
+    origw=gap_table(d,lambda s:(s.set=="original")&(s.wording=="orig"))   # the two halves of the balanced view
+    bal.to_csv(os.path.join(OUT,"gap_balanced.csv"),index=False); origw.to_csv(os.path.join(OUT,"gap_originals_origwording.csv"),index=False)
+    res["switch_balanced"]=add_switch(bal)
+    # how many cards the models actually opened at each limit
+    cards=d[d.card_limit>0].groupby(["model","card_limit"]).n_cards_opened.mean().unstack().round(3)
+    cards.to_csv(os.path.join(OUT,"cards_opened_by_limit.csv"))
     word=gap_table(d,lambda s:s.set=="original",by_wording=True)
     allt.to_csv(os.path.join(OUT,"gap_all.csv"),index=False); orig.to_csv(os.path.join(OUT,"gap_originals.csv"),index=False)
     mir.to_csv(os.path.join(OUT,"gap_mirrored.csv"),index=False); word.to_csv(os.path.join(OUT,"gap_by_wording.csv"),index=False)
@@ -148,10 +217,18 @@ def main():
     hall,hgrp,hglmm=human_tables()
     hall.to_csv(os.path.join(OUT,"human_gap_by_cards.csv"),index=False); hgrp.to_csv(os.path.join(OUT,"human_gap_grouped.csv"),index=False)
     res["human_glmm"]=hglmm
+    bb=boot_labels(d,lambda s:s.wording=="orig"); bp=boot_labels(d,lambda s:s.wording.notna(),seed=3)
+    bb["newcombe_label"]=bal.label.values; bp["newcombe_label"]=allt.label.values
+    bb.to_csv(os.path.join(OUT,"boot_balanced.csv"),index=False); bp.to_csv(os.path.join(OUT,"boot_pooled.csv"),index=False)
+    res["boot_agree"]=dict(balanced=int((bb.boot_label==bb.newcombe_label).sum()),pooled=int((bp.boot_label==bp.newcombe_label).sum()),of=len(bb))
+    hb=human_boot(); hb["newcombe_label"]=hgrp.label.values; hb.to_csv(os.path.join(OUT,"human_boot.csv"),index=False)
+    card_choices(d).to_csv(os.path.join(OUT,"card_choices.csv"),index=False)
+    batch_check(d).to_csv(os.path.join(OUT,"batch_check.csv"),index=False)
     json.dump(res,open(os.path.join(OUT,"followup_results.json"),"w"),indent=1,default=float)
     pd.set_option("display.width",200); pd.set_option("display.max_rows",200)
     fmt=lambda t:t.round(1).to_string(index=False)
     print("runs used",len(d),"dropped",dropped)
+    print("\n== balanced (original wording, q vs m)\n"+fmt(bal[["model","cards","n_gain","n_loss","pct_gain","pct_loss","gap","lo","hi","label"]])); print(res["switch_balanced"])
     print("\n== all scenarios (the rule)\n"+fmt(allt[["model","cards","pct_gain","pct_loss","gap","lo","hi","label"]]))
     print("switch points:",res["switch_all"])
     print("\n== originals only\n"+fmt(orig[["model","cards","gap","lo","hi","label"]])); print(res["switch_originals"])
